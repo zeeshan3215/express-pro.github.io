@@ -18,6 +18,7 @@ usersController.getAll = async (req, res) => {
         limit: parseInt(length)
       }
     );
+    console.log(users);
     res.status(200).send({
       code: 200,
       message: 'Successful',
