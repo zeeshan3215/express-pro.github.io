@@ -3,6 +3,7 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 require('dotenv').config();
+
 const errorHandler = require("./middleware/error-handler");
 const errorMessage = require("./middleware/error-message");
 const accessControls = require("./middleware/access-controls");
@@ -20,7 +21,7 @@ app.use(
 // Requiring Routes
 
 const UsersRoutes = require('./routes/users.routes');
-
+const BooksRoutes = require('./routes/books.routes');
 // connection to mongoose
 const mongoCon = process.env.mongoCon;
 
@@ -47,6 +48,7 @@ app.use(cors());
 
 // Routes which should handle requests
 app.use("/users",UsersRoutes);
+app.use("/books",BooksRoutes);
 // app.use("/users", userRoutes);
 
 app.use(errorHandler);

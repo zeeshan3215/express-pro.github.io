@@ -59,6 +59,7 @@ usersController.registerUser = async (req, res) => {
     var hash = bcrypt.hashSync(password, salt);
 
     body.password = hash;
+    console.log(body);
     const user = new Users(body);
 
     const result = await user.save();
@@ -68,7 +69,14 @@ usersController.registerUser = async (req, res) => {
     });
   } catch (ex) {
     console.log('ex', ex);
-
+    if(ex.code===11000){
+      res
+      .send({
+        message: 'This email has been registered already',
+      })
+      .status(500);
+    }
+    else {
     res
       .send({
         message: 'Error',
@@ -76,7 +84,8 @@ usersController.registerUser = async (req, res) => {
       })
       .status(500);
   }
-};
+  }
+  };
 
 
 usersController.loginUser = async (req, res) => {
@@ -105,7 +114,7 @@ usersController.loginUser = async (req, res) => {
             const token = jsonwebtoken.sign({
                data: result,
                role: 'User'
-            }, 'supersecretToken', { expiresIn: '7d' });
+            }, process.env.JWT_KEY, { expiresIn: '7d' });
             
             res.send({ message: 'Successfully Logged in', token: token });
           } 
