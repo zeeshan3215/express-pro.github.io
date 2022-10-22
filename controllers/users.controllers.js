@@ -4,10 +4,13 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const jsonwebtoken =  require('jsonwebtoken');
 
+
 usersController.getAll = async (req, res) => {
   let users;
   try {
     let merged = {};
+    const start = 0;
+    const length = 100;
 
     users = await Users.paginate(
       merged,
@@ -118,6 +121,8 @@ usersController.loginUser = async (req, res) => {
             }, process.env.JWT_KEY, { expiresIn: '7d' });
             
             res.send({ message: 'Successfully Logged in', token: token });
+
+            console.log(token,'uuuuuuuuuuuuuuuuuuuuu')
           } 
           
           else {
